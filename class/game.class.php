@@ -245,30 +245,29 @@ class Game{
     return $shotShip->getShip()->isSunk();
   }
 
-  function isWon(){
+  function isWin(){
     if($this->isUserTurn){
       $currShips = $this->shipPlacementspc;
       $this->isUserTurn = false;
     }
     else{
       $currShips = $this->shipPlacements;
-      //$this->isUserTurn = true;
     }
-    $won = true;
+    $win = true;
     foreach($currShips as $ship){
-      if(!$ship->getShip()->isSunk()){
-        $won = false;
+      if(!($ship->getShip()->isSunk())){
+        $win = false;
         break;
       }
     }
-    return $won;
+    return $win;
   }
   function buildResponse($x, $y, $ship){
     $response = array();
     if($ship){
       //case where hit
       $response['isHit'] = true;
-      $response['isWin'] = $this->isWon();
+      $response['isWin'] = $this->isWin();
       $sunk = $ship->getShip()->isSunk();
       $response['isSunk'] = $sunk;
       if($sunk){
@@ -281,7 +280,7 @@ class Game{
     else{
       //case where no hit
       $response['isHit'] = false;
-      $response['isWin'] = $this->isWon();
+      $response['isWin'] = $this->isWin();
       $response['isSunk'] = false;
       $response['ship'] = array();
     }
